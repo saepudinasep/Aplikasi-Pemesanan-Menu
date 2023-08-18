@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Employee;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class EmployeeSeeder extends Seeder
 {
@@ -15,6 +16,11 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
+
+        Schema::disableForeignKeyConstraints();
+        Employee::truncate();
+        Schema::enableForeignKeyConstraints();
+
         Employee::factory()->count(10)->create();
     }
 }

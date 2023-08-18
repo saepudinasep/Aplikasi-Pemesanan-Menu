@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('header_orders', function (Blueprint $table) {
-            $table->softDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('photo')->unique()->after('phone')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('header_orders', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('photo');
         });
     }
 };

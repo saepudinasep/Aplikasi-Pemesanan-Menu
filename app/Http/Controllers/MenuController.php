@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MenuController extends Controller
 {
@@ -12,9 +13,12 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $menu = Menu::paginate(10);
+        $keyword = $request->keyword;
+        $menu = Menu::where('name', 'LIKE', '%'.$keyword.'%')
+                ->orderByRaw('id DESC')
+                ->paginate(10);
         return view('menu', ['menu' => $menu]);
     }
     /**
@@ -35,18 +39,26 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        // $newName = "";
-        // if ($request->file('photo')) {
-        //     $extension = $request->file('photo')->getClientOriginalExtension();
-        //     $newName = $request->name.'-'.now()->timestamp.'.'.$extension;
-           return $request->file('photo')->store('photos');
-        // }
+        $newName = "";
 
-        // $request['image'] = $newName;
+        if ($request->file('photo')) {
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $newName = $request->name.'-'.now()->timestamp.'.'.$extension;
+            $request->file('photo')->storeAs('image', $newName);
+        }
 
-        // $menu = Menu::create($request->all());
+        $request['image'] = $newName;
+        // dd($request['photo']);
+        // dd($request->all());
 
-        // return redirect('/menu');
+        $menu = Menu::create($request->all());
+
+        if ($menu) {
+            Session::flash('status', 'success');
+            Session::flash('message', 'add new Menu success');
+        }
+
+        return redirect('/menu');
     }
 
     /**
@@ -68,7 +80,8 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $menu = Menu::findOrFail($id);
+        return view('menu-edit', ['menu' => $menu]);
     }
 
     /**
@@ -80,7 +93,33 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $menu = Menu::findOrFail($id);
+
+        $newName = $menu->image;
+
+        if ($request->file('photo')) {
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $newName = $request->name.'-'.now()->timestamp.'.'.$extension;
+            $request->file('photo')->storeAs('image', $newName);
+        }
+
+        $request['image'] = $newName;
+
+        $menu->update($request->all());
+
+        if ($menu) {
+            Session::flash('status', 'success');
+            Session::flash('message', 'Update Menu Success');
+        }
+
+        return redirect('/menu');
+    }
+
+
+    public function delete($id)
+    {
+        $menu = Menu::findOrFail($id);
+        return view('menu-delete', ['menu' => $menu]);
     }
 
     /**
@@ -91,6 +130,15 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $menu = Menu::findOrFail($id);
+
+        $menu->delete();
+
+        if ($menu) {
+            Session::flash('status', 'success');
+            Session::flash('message', 'Update Menu Success');
+        }
+
+        return redirect('/menu');
     }
 }

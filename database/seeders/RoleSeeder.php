@@ -6,6 +6,7 @@ use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class RoleSeeder extends Seeder
 {
@@ -16,10 +17,15 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        Role::truncate();
+        Schema::enableForeignKeyConstraints();
+
         $data = [
             ['name' => 'Admin'],
             ['name' => 'Cashier'],
             ['name' => 'Chef'],
+            ['name' => 'Waiter']
         ];
 
         foreach ($data as $value) {

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Member;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class MemberSeeder extends Seeder
 {
@@ -15,6 +16,11 @@ class MemberSeeder extends Seeder
      */
     public function run()
     {
+
+        Schema::disableForeignKeyConstraints();
+        Member::truncate();
+        Schema::enableForeignKeyConstraints();
+
         Member::factory()->count(25)->create();
     }
 }

@@ -11,6 +11,6 @@ class Menu extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name', 'price', 'photo'
+        'name', 'price', 'image'
     ];
 }

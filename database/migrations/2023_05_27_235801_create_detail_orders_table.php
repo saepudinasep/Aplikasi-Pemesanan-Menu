@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('status', 10);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

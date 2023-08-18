@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('handphone', 13)->required();
             $table->date('joinDate')->required();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

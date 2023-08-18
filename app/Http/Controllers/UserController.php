@@ -10,9 +10,17 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::where('role_id', '!=', 1)->orderByRaw('id DESC')->paginate(10);
+        $keyword = $request->keyword;
+        $user = User::with('role')
+                ->orWhere('name', 'LIKE', '%'.$keyword.'%')
+                ->orWhere('email', 'LIKE', '%'.$keyword.'%')
+                ->orWhere('phone', 'LIKE', '%'.$keyword.'%')
+                ->orWhereHas('role', function($query) use($keyword){
+                    $query->where('name', 'LIKE', '%'.$keyword.'%');
+                })
+                ->orderByRaw('id DESC')->paginate(10);
         return view('user', ['user' => $user]);
     }
 

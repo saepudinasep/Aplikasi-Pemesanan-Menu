@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('password', 255)->change();
+        Schema::table('header_orders', function (Blueprint $table) {
+            $table->unsignedBigInteger('member_id')->after('table_id')->nullable();
+            $table->foreign('member_id')->references('id')->on('members');
         });
     }
 
@@ -25,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->string('name', 50)->change();
+        Schema::table('header_orders', function (Blueprint $table) {
+            $table->dropForeign('header_orders_member_id_foreign');
+            $table->dropColumn('member_id');
         });
     }
 };

@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50)->required();
             $table->integer('price')->required();
-            $table->string('photo', 100)->required();
+            $table->string('image', 100)->required();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

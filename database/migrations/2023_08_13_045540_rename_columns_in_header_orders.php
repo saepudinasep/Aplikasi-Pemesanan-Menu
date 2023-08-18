@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->softDeletes();
-            //
+        Schema::table('header_orders', function (Blueprint $table) {
+            $table->renameColumn('payment', 'total');
+            $table->renameColumn('bank', 'uang');
         });
     }
 
@@ -26,9 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropSoftDeletes();
-            //
+        Schema::table('header_orders', function (Blueprint $table) {
+            $table->renameColumn('total', 'payment');
+            $table->renameColumn('uang', 'bank');
         });
     }
 };

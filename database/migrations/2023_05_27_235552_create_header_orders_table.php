@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
-            $table->unsignedBigInteger('member_id');
-            $table->foreign('member_id')->references('id')->on('members')->onDelete('restrict');
+            $table->unsignedBigInteger('table_id');
+            $table->foreign('table_id')->references('id')->on('tables')->onDelete('restrict');
             $table->date('date');
             $table->string('payment', 50);
             $table->string('bank', 50);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

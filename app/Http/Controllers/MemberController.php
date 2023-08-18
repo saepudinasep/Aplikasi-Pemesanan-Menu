@@ -14,17 +14,14 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('member');
-    }
-
-    public function read()
-    {
-        $data = Member::orderByRaw('id DESC')->paginate(10);
-        return view('read-member')->with([
-            'data' => $data
-        ]);
+        $keyword = $request->keyword;
+        $data = Member::where('name', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('email', 'LIKE', '%' . $keyword . '%')
+            ->orWhere('handphone', 'LIKE', '%' . $keyword . '%')
+            ->orderByRaw('id DESC')->paginate(10);
+        return view('member', ['data' => $data]);
     }
 
     /**
@@ -34,7 +31,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('create-member');
+        return view('member-add');
     }
 
     /**
@@ -45,16 +42,15 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        $data["name"] = $request->name;
-        $data["email"] = $request->email;
-        $data["handphone"] = $request->handphone;
-        $request["joinDate"] = Carbon::now();
-        $data["joinDate"] = $request["joinDate"];
-        $member = Member::create($data);
+        $request['joinDate'] = now()->format('Y-m-d');
+        // dd($request->all());
+        $member = Member::create($request->all());
         if ($member) {
             Session::flash('status', 'success');
-            Session::flash('message', 'add new member success');
+            Session::flash('message', 'Add new member success');
         }
+
+        return redirect('/member');
     }
 
     /**
@@ -76,7 +72,8 @@ class MemberController extends Controller
      */
     public function edit($id)
     {
-        //
+        $member = Member::findOrFail($id);
+        return view('member-edit', ['member' => $member]);
     }
 
     /**
@@ -88,7 +85,23 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $member = Member::findOrFail($id);
+
+        $member->update($request->all());
+
+        if ($member) {
+            Session::flash('status', 'success');
+            Session::flash('message', 'Update member success');
+        }
+
+        return redirect('/member');
+    }
+
+
+    public function delete($id)
+    {
+        $member = Member::findOrFail($id);
+        return view('member-delete', ['member' => $member]);
     }
 
     /**
@@ -99,6 +112,16 @@ class MemberController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $member = Member::findOrFail($id);
+
+        $member->delete();
+
+
+        if ($member) {
+            Session::flash('status', 'success');
+            Session::flash('message', 'Delete member success');
+        }
+
+        return redirect('/member');
     }
 }

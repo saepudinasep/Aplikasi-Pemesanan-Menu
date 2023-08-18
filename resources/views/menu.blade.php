@@ -25,9 +25,19 @@
     </div>
 
 
+
+
+    @if (Session::has('status'))
+        <div class="alert alert-success" role="alert">
+            {{ Session::get('message') }}
+        </div>
+    @endif
+
+
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Employee</h6>
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Menu</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -47,7 +57,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->name }}</td>
                                 <td>{{ $data->price }}</td>
-                                <td>{{ $data->phone }}</td>
+                                <td><img src="{{ asset('storage/image/' . $data->image) }}" alt="" width="200">
+                                </td>
                                 <td>
                                     <a href="/menu-edit/{{ $data->id }}" class="btn btn-warning">
                                         <i class="fas fa-edit"></i>

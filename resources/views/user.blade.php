@@ -60,12 +60,18 @@
                                 <td>{{ $data->phone }}</td>
                                 <td>{{ $data->role->name }}</td>
                                 <td>
+                                    @if ($data->id == Auth::user()->id || $data->role_id == Auth::user()->role_id)
+                                        -
+
+                                    @else
                                     <a href="/employee-edit/{{ $data->id }}" class="btn btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="/employee-delete/{{ $data->id }}" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
+                                    @endif
+
                                 </td>
                             </tr>
                         @endforeach
