@@ -49,18 +49,17 @@
                                 <td>
                                     <select name="status" id="status" class="form-control status"
                                         data-id="{{ $item->id }}">
-                                        <option value="Pending" {{ $item->status == 'Pending' ? 'selected' : '' }}>Pending
-                                        </option>
-                                        <option value="Cooking" {{ $item->status == 'Cooking' ? 'selected' : '' }}>Cooking
-                                        </option>
-                                        <option value="Deliver" {{ $item->status == 'Deliver' ? 'selected' : '' }}>Deliver
-                                        </option>
-                                        {{-- @foreach (['Pending', 'Deliver', 'Cooking'] as $status)
-                                            <option value="{{ $status }}"
-                                                @if ($item->status == $status) selected @endif>
-                                                {{ $status }}
-                                            </option>
-                                        @endforeach --}}
+                                        @if ($item->status == 'Pending')
+                                            <option value="Pending" selected>Pending</option>
+                                            <option value="Cooking">Cooking</option>
+                                            <option value="Deliver">Deliver</option>
+                                        @elseif($item->status == 'Cooking')
+                                            <option value="Cooking" selected>Cooking</option>
+                                            <option value="Deliver">Deliver</option>
+                                        @elseif($item->status == 'Deliver')
+                                            <option value="Cooking">Cooking</option>
+                                            <option value="Deliver" selected>Deliver</option>
+                                        @endif
                                     </select>
                                 </td>
                             </tr>

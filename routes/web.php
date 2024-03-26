@@ -47,8 +47,7 @@ Route::get('/employee-add', [UserController::class, 'create'])->middleware('auth
 Route::post('/employee', [UserController::class, 'store'])->middleware('auth', 'MustAdmin');
 Route::get('/employee-edit/{id}', [UserController::class, 'edit'])->middleware('auth', 'MustAdmin');
 Route::post('/employee/{id}', [UserController::class, 'update'])->middleware('auth', 'MustAdmin');
-Route::get('/employee-delete/{id}', [UserController::class, 'delete'])->middleware('auth', 'MustAdmin');
-Route::delete('/employee-destroy/{id}', [UserController::class, 'destroy'])->middleware('auth', 'MustAdmin');
+Route::delete('/employee/{id}', [UserController::class, 'destroy'])->middleware('auth', 'MustAdmin');
 
 
 // Menu
@@ -57,8 +56,7 @@ Route::get('/menu-add', [MenuController::class, 'create'])->middleware('auth', '
 Route::post('/menu', [MenuController::class, 'store'])->middleware('auth', 'MustAdmin');
 Route::get('/menu-edit/{id}', [MenuController::class, 'edit'])->middleware('auth', 'MustAdmin');
 Route::post('/menu/{id}', [MenuController::class, 'update'])->middleware('auth', 'MustAdmin');
-Route::get('/menu-delete/{id}', [MenuController::class, 'delete'])->middleware('auth', 'MustAdmin');
-Route::delete('/menu-destroy/{id}', [MenuController::class, 'destroy'])->middleware('auth', 'MustAdmin');
+Route::delete('/menu/{id}', [MenuController::class, 'destroy'])->middleware('auth', 'MustAdmin');
 
 
 
@@ -68,8 +66,7 @@ Route::get('/member-add', [MemberController::class, 'create'])->middleware('auth
 Route::post('/member', [MemberController::class, 'store'])->middleware('auth', 'MustAdmin');
 Route::get('/member-edit/{id}', [MemberController::class, 'edit'])->middleware('auth', 'MustAdmin');
 Route::post('/member/{id}', [MemberController::class, 'update'])->middleware('auth', 'MustAdmin');
-Route::get('/member-delete/{id}', [MemberController::class, 'delete'])->middleware('auth', 'MustAdmin');
-Route::delete('/member-destroy/{id}', [MemberController::class, 'destroy'])->middleware('auth', 'MustAdmin');
+Route::delete('/member/{id}', [MemberController::class, 'destro'])->middleware('auth', 'MustAdmin');
 
 
 // Menu Waiter

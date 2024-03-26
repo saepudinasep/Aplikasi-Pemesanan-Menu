@@ -98,30 +98,27 @@ class MemberController extends Controller
     }
 
 
-    public function delete($id)
-    {
-        $member = Member::findOrFail($id);
-        return view('member-delete', ['member' => $member]);
-    }
-
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+
+    public function destro($id)
     {
         $member = Member::findOrFail($id);
 
-        $member->delete();
-
-
-        if ($member) {
-            Session::flash('status', 'success');
-            Session::flash('message', 'Delete member success');
+        if ($member->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Delete Member Success'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete'
+            ]);
         }
-
-        return redirect('/member');
     }
 }

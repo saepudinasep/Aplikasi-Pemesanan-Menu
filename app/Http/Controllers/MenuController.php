@@ -16,9 +16,10 @@ class MenuController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->keyword;
-        $menu = Menu::where('name', 'LIKE', '%'.$keyword.'%')
-                ->orderByRaw('id DESC')
-                ->paginate(10);
+        $menu = Menu::whereNotNull('deleted_at')
+            ->orwhere('name', 'LIKE', '%' . $keyword . '%')
+            ->orderByDesc('id')
+            ->paginate(10);
         return view('menu', ['menu' => $menu]);
     }
     /**
@@ -43,8 +44,8 @@ class MenuController extends Controller
 
         if ($request->file('photo')) {
             $extension = $request->file('photo')->getClientOriginalExtension();
-            $newName = $request->name.'-'.now()->timestamp.'.'.$extension;
-            $request->file('photo')->storeAs('image', $newName);
+            $newName = $request->name . '-' . now()->timestamp . '.' . $extension;
+            $request->file('photo')->storeAs('public/image', $newName);
         }
 
         $request['image'] = $newName;
@@ -99,8 +100,8 @@ class MenuController extends Controller
 
         if ($request->file('photo')) {
             $extension = $request->file('photo')->getClientOriginalExtension();
-            $newName = $request->name.'-'.now()->timestamp.'.'.$extension;
-            $request->file('photo')->storeAs('image', $newName);
+            $newName = $request->name . '-' . now()->timestamp . '.' . $extension;
+            $request->file('photo')->storeAs('public/image', $newName);
         }
 
         $request['image'] = $newName;
@@ -116,12 +117,6 @@ class MenuController extends Controller
     }
 
 
-    public function delete($id)
-    {
-        $menu = Menu::findOrFail($id);
-        return view('menu-delete', ['menu' => $menu]);
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -132,13 +127,16 @@ class MenuController extends Controller
     {
         $menu = Menu::findOrFail($id);
 
-        $menu->delete();
-
-        if ($menu) {
-            Session::flash('status', 'success');
-            Session::flash('message', 'Update Menu Success');
+        if ($menu->delete()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Delete Menu Success'
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete'
+            ]);
         }
-
-        return redirect('/menu');
     }
 }

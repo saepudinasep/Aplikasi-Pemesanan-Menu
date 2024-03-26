@@ -148,7 +148,7 @@
             {{-- akses waiter --}}
             @if (Auth::user()->role_id == 4)
                 <li class="nav-item
-                @if (request()->is('table')) active @endif
+                @if (request()->is('table') || request()->is('order/*')) active @endif
                 ">
                     <a class="nav-link" href="/table">
                         <i class="fas fa-coffee"></i>
